@@ -55,7 +55,7 @@ public class QuoteServerThread extends Thread{
 
                 packet = new DatagramPacket(buf, buf.length, address, port);
                 socket.send(packet);
-                System.out.format("Datagram packet sent...");
+                System.out.println("Datagram packet sent...");
             } catch (IOException e) {
                 e.printStackTrace();
                 moreQuotes = false;

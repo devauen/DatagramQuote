@@ -13,6 +13,7 @@ public class QuoteServerThread extends Thread{
     protected DatagramSocket socket = null;
     protected BufferedReader in = null;
     protected boolean moreQuotes = true;
+    protected int portNumber = 4445;
 
     public QuoteServerThread() throws IOException {
         this("QuoteServer");
@@ -20,7 +21,7 @@ public class QuoteServerThread extends Thread{
 
     public QuoteServerThread(String name) throws IOException {
         super(name);
-        socket = new DatagramSocket(4445);
+        socket = new DatagramSocket(portNumber);
         try {
             in = new BufferedReader(new FileReader("one-liners.txt"));
         } catch(FileNotFoundException e) {
@@ -35,6 +36,8 @@ public class QuoteServerThread extends Thread{
                 // receiving the datagram
                 byte[] buf = new byte[256];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                System.out.format("Server started on %d port.%n" +
+                        "Waiting for the requests...", portNumber);
                 socket.receive(packet);
 
                 // preparing the data response
@@ -48,8 +51,11 @@ public class QuoteServerThread extends Thread{
                 // sending the response
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
+                System.out.format("Received the request from %s:%d%n", address, port);
+
                 packet = new DatagramPacket(buf, buf.length, address, port);
                 socket.send(packet);
+                System.out.format("Datagram packet sent...");
             } catch (IOException e) {
                 e.printStackTrace();
                 moreQuotes = false;

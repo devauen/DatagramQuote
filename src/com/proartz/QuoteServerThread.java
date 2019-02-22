@@ -37,7 +37,7 @@ public class QuoteServerThread extends Thread{
                 byte[] buf = new byte[256];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 System.out.format("Server started on %d port.%n" +
-                        "Waiting for the requests...", portNumber);
+                        "Waiting for the requests...%n", portNumber);
                 socket.receive(packet);
 
                 // preparing the data response
